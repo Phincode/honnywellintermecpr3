@@ -2,6 +2,20 @@
 
 honnywellintermecpr3 plugin.
 
+## Step 1
+Import plugin to your pubspec file
+## Step 2
+add folder hsm-android-print to your android module root
+## Step 3
+add this to your android/settings.gradle
+include ':hsm-android-print'
+## Step 3
+add this to your android/settings.gradle
+include ':hsm-android-print'
+## Step 3
+
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter

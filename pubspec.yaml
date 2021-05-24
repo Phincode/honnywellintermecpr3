@@ -1,8 +1,8 @@
 name: honnywellintermecpr3
-description: honnywellintermecpr3 plugin.
+description: Honnywell Pr3 printer flutter plugin.
 version: 0.0.1
-author:
-homepage:
+author: phincode
+homepage: https://github.com/Phincode/honnywellintermecpr3
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -30,8 +30,8 @@ flutter:
       android:
         package: com.phincode.honnywellintermecpr3
         pluginClass: Honnywellintermecpr3Plugin
-      ios:
-        pluginClass: Honnywellintermecpr3Plugin
+      #ios:
+      #  pluginClass: Honnywellintermecpr3Plugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
