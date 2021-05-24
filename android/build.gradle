@@ -38,6 +38,5 @@ android {
 }
 
 dependencies{
-    api project('hsm-android-print')
-
+    api project(':hsm-android-print')
 }

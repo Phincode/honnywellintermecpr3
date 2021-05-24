@@ -17,7 +17,7 @@ class Honnywellintermecpr3 {
   ///String deviceBleutoothMacAdress,bleutooth device name
   ///String image to print in b64 in png or bmp format
 
-  static Future<dynamic> print(String deviceName,String deviceBleutoothMacAdress,String imageb64) async {
+   Future<dynamic> print(String deviceName,String deviceBleutoothMacAdress,String imageb64) async {
     final String res = await _channel.invokeMethod('setprinterdetails',{
       "deviceName":deviceName,
       "deviceBleutoothMacAdress":deviceBleutoothMacAdress,

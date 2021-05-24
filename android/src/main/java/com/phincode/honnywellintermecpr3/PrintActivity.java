@@ -1,9 +1,5 @@
 package com.phincode.honnywellintermecpr3;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
@@ -18,18 +14,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.TextView;
 
 import com.honeywell.mobility.print.LinePrinter;
 import com.honeywell.mobility.print.LinePrinterException;
 import com.honeywell.mobility.print.PrintProgressEvent;
 import com.honeywell.mobility.print.PrintProgressListener;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 
 
 /**
@@ -56,9 +57,10 @@ public class PrintActivity extends Activity {
 	private String jsonCmdAttribStr = null;
 	private String base64LogoPng = null;
 	private Spinner connectionTypes;
+	Intent intent;
 
 	public static final int CAPTURE_SIGNATURE_ACTIVITY = 1;
-	private static final String DEFAULT_BT_MAC_ADDRESS = "00:1D:DF:55:6C:27";
+	public   String DEFAULT_BT_MAC_ADDRESS = "B8:69:C2:25:4F:1B";
 	private static final String DEFAULT_SERIAL_PORT = "dev/rs232_dex0";
 
 	@Override
@@ -68,12 +70,16 @@ public class PrintActivity extends Activity {
 
 		setContentView(R.layout.activity_print );
 
+		//get intent variable
+		intent=getIntent();
+
 		textMsg = (TextView) findViewById(R.id.textMsg);
 
 		editPrinterID = (EditText) findViewById(R.id.editPrinterID);
 		// Set a default Printer ID
-		editPrinterID.setText("PR2");
-
+		editPrinterID.setText(intent.getStringExtra("deviceName"));
+		DEFAULT_BT_MAC_ADDRESS=intent.getStringExtra("deviceBleutoothMacAdress");
+		base64LogoPng=intent.getStringExtra("imageb64");
 		connectionTypes = (Spinner) findViewById(R.id.spinnerConnectionTypes);
 		initConnectionTypesSpinner();
 
@@ -193,9 +199,9 @@ public class PrintActivity extends Activity {
 				case 0:
 					jsonCmdAttribStr = output.toString();
 					break;
-				case 1:
+				/*case 1:
 					base64LogoPng = Base64.encodeToString(output.toByteArray(), Base64.DEFAULT);
-					break;
+					break;*/
 				}
 
 				fileIndex++;
@@ -384,38 +390,48 @@ public class PrintActivity extends Activity {
 					}
 				}
 
-				// Prints the Honeywell logo graphic.
+
+
+				// Prints the image  graphic.
 				lp.writeGraphicBase64(base64LogoPng,
 							LinePrinter.GraphicRotationDegrees.DEGREE_0,
-							72,  // Offset in printhead dots from the left of the page
-							200, // Desired graphic width on paper in printhead dots
-							40); // Desired graphic height on paper in printhead dots
-				lp.newLine(1);
+							80,  // Offset in printhead dots from the left of the page
+							400, // Desired graphic width on paper in printhead dots
+							400); // Desired graphic height on paper in printhead dots
+				lp.newLine(2);
+
+				lp.setBold(true);
+				lp.setDoubleWide(true);
+				lp.setDoubleHigh(true);
+				lp.write("FLUTTER PR3 PLUGIN BY PHINCODE");
+				lp.setDoubleWide(false);
+				lp.setDoubleHigh(false);
+				lp.newLine(2);
 
 				// Set font style to Bold + Double Wide + Double High.
-				lp.setBold(true);
+				/*lp.setBold(true);
 				lp.setDoubleWide(true);
 				lp.setDoubleHigh(true);
 				lp.write("SALES ORDER");
 				lp.setDoubleWide(false);
 				lp.setDoubleHigh(false);
-				lp.newLine(2);
+				lp.newLine(2);*/
 
 				// The following text shall be printed in Bold font style.
-				lp.write("CUSTOMER: Casual Step");
+				/*lp.write("CUSTOMER: Casual Step");
 				lp.setBold(false);  // Returns to normal font.
-				lp.newLine(2);
+				lp.newLine(2);*/
 
 				// Set font style to Compressed + Double High.
-				lp.setDoubleHigh(true);
+				/*lp.setDoubleHigh(true);
 				lp.setCompress(true);
 				lp.write("DOCUMENT#: " + sDocNumber);
 				lp.setCompress(false);
 				lp.setDoubleHigh(false);
-				lp.newLine(2);
+				lp.newLine(2);*/
 
 				// The following text shall be printed in Normal font style.
-				lp.write(" PRD. DESCRIPT.   PRC.  QTY.    NET.");
+				/*lp.write(" PRD. DESCRIPT.   PRC.  QTY.    NET.");
 				lp.newLine(2);
 
 				lp.write(" 1501 Timer-Md1  13.15     1   13.15");
@@ -449,9 +465,9 @@ public class PrintActivity extends Activity {
 				lp.write("       SIGNATURE / STORE STAMP");
 				lp.setDoubleHigh(false);
 				lp.newLine(2);
-
+*/
 				// Prints the captured signature if it exists.
-				if (base64SignaturePng != null)
+				/*if (base64SignaturePng != null)
 				{
 					lp.writeGraphicBase64(base64SignaturePng,
 							LinePrinter.GraphicRotationDegrees.DEGREE_0,
@@ -465,15 +481,15 @@ public class PrintActivity extends Activity {
 
 				lp.write("          ORIGINAL");
 				lp.setBold(false);
-				lp.newLine(2);
+				lp.newLine(2);*/
 
 				// Print a Code 39 barcode containing the document number.
-				lp.writeBarcode(LinePrinter.BarcodeSymbologies.SYMBOLOGY_CODE39,
+				/*lp.writeBarcode(LinePrinter.BarcodeSymbologies.SYMBOLOGY_CODE39,
 						sDocNumber,   // Document# to encode in barcode
 						60,           // Desired height of the barcode in printhead dots
 						40);          // Offset in printhead dots from the left of the page
 
-				lp.newLine(4);
+				lp.newLine(4);*/
 
 				sResult = "Number of bytes sent to printer: " + lp.getBytesWritten();
 			}

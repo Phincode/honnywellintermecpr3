@@ -1,35 +1,54 @@
 package com.phincode.honnywellintermecpr3;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import com.phincode.honnywellintermecpr3.PrintActivity;
+
 import androidx.annotation.NonNull;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
+
+import static androidx.core.content.ContextCompat.startActivity;
 
 /** Honnywellintermecpr3Plugin */
-public class Honnywellintermecpr3Plugin implements FlutterPlugin, MethodCallHandler,ActivityAware {
+
+public class Honnywellintermecpr3Plugin  implements FlutterPlugin, MethodCallHandler{
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private MethodChannel channel;
+  Context c;
 
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
     channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "honnywellintermecpr3");
     channel.setMethodCallHandler(this);
+    c=flutterPluginBinding.getApplicationContext();
   }
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     if (call.method.equals("setprinterdetails")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-      Intent itent =new Intent(this,PrintActivity.class);
+
+      String deviceName = call.argument("deviceName");
+      String deviceBleutoothMacAdress = call.argument("deviceBleutoothMacAdress");
+      String imageb64 = call.argument("imageb64");
+      Intent intent = new Intent(this.c,PrintActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      intent.putExtra("deviceName",deviceName);
+      intent.putExtra("deviceBleutoothMacAdress",deviceBleutoothMacAdress);
+      intent.putExtra("imageb64",imageb64);
+      startActivity(this.c,intent,null);
+
+
 
     } else {
       result.notImplemented();
@@ -39,5 +58,9 @@ public class Honnywellintermecpr3Plugin implements FlutterPlugin, MethodCallHand
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     channel.setMethodCallHandler(null);
+
   }
+
+
+
 }
