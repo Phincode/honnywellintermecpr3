@@ -11,6 +11,8 @@ add folder hsm-android-print to your android module root
 ## Step 3
 add this to your android/settings.gradle
 include ':hsm-android-print'
+ you can found it on exemple app android module folder
+
 
 ## Getting Started
 
