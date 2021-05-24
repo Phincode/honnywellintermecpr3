@@ -17,7 +17,7 @@ include ':hsm-android-print'
 ##Commande to send to printer
 
 Create String List like following
-//commande to send to printer
+``` Dart
 var cmd=[
   "setBold;true",--->set next printing string bold
   "setDoubleHigh;true",---->set next printing string height
@@ -36,6 +36,7 @@ var cmd=[
   "heigh;400",--->set height
   "image;base64 image string"--->image to print
 ];
+```
 
 ##use case
   Honnywellintermecpr3 n =new Honnywellintermecpr3();
