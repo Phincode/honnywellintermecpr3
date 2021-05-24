@@ -477,11 +477,9 @@ public class PrintActivity extends Activity {
 
 				}
 				//signature
-				lp.setDoubleWide(true);
-				lp.setDoubleHigh(true);
-				lp.write("FLUTTER PR3 PLUGIN BY PHINCODE");
-				lp.setDoubleWide(false);
-				lp.setDoubleHigh(false);
+				lp.setBold(true);
+				lp.write("by phincode");
+				lp.setBold(false);
 				lp.newLine(2);
 				lp.newLine(2);
 				lp.write("-------------------------------------------------------");
