@@ -6,15 +6,32 @@ Image format(.png,.bmp) white and black....
 
 ## Step 1
 Import plugin to your pubspec file
+```
+honnywellintermecpr3: ^0.0.1
+```
 ## Step 2
-add folder hsm-android-print to your android module root
+add folder hsm-android-print to your android module root level
+[a link] (https://github.com/Phincode/honnywellintermecpr3/tree/master/example/android/hsm-android-print)
 ## Step 3
 add this to your android/settings.gradle
 ```
 include ':hsm-android-print'
 ```
- you can found it on exemple app android module folder
+see example here:
+ [a link] (https://github.com/Phincode/honnywellintermecpr3/tree/master/example/android/settings.gradle)
 
+ ## Step 4
+ update your AndroidManifest.xml  android/app level
+ add this  to your manifest tag :
+ ```
+ xmlns:tools="http://schemas.android.com/tools"
+ ```
+ add this  to your application tag :
+  ```
+  tools:replace="android:label"
+  ```
+ see example here:
+  [a link] (https://github.com/Phincode/honnywellintermecpr3/blob/master/example/android/app/src/main/AndroidManifest.xml)
 
 ## Getting Started
 
