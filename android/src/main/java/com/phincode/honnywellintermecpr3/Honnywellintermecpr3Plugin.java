@@ -4,8 +4,11 @@ package com.phincode.honnywellintermecpr3;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -36,7 +39,7 @@ public class Honnywellintermecpr3Plugin  implements FlutterPlugin, MethodCallHan
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("setprinterdetails")) {
+    if (call.method.equals("printImg")) {
 
       String deviceName = call.argument("deviceName");
       String deviceBleutoothMacAdress = call.argument("deviceBleutoothMacAdress");
@@ -50,7 +53,20 @@ public class Honnywellintermecpr3Plugin  implements FlutterPlugin, MethodCallHan
 
 
 
-    } else {
+    } else if(call.method.equals("printGeneral")){
+      String deviceName = call.argument("deviceName");
+      String deviceBleutoothMacAdress = call.argument("deviceBleutoothMacAdress");
+      ArrayList<String> commande = call.argument("cmd");
+      Log.d ("cmd",commande.toString());
+      Intent intent = new Intent(this.c,PrintActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      intent.putExtra("deviceName",deviceName);
+      intent.putExtra("deviceBleutoothMacAdress",deviceBleutoothMacAdress);
+      intent.putExtra("cmd",commande);
+      startActivity(this.c,intent,null);
+
+    }
+    else {
       result.notImplemented();
     }
   }

@@ -2,6 +2,7 @@ package com.phincode.honnywellintermecpr3;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -30,7 +32,7 @@ import com.honeywell.mobility.print.PrintProgressListener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
+import java.util.ArrayList;
 
 
 /**
@@ -59,6 +61,7 @@ public class PrintActivity extends Activity {
 	private Spinner connectionTypes;
 	Intent intent;
 
+	ArrayList<String> commande;
 	public static final int CAPTURE_SIGNATURE_ACTIVITY = 1;
 	public   String DEFAULT_BT_MAC_ADDRESS = "B8:69:C2:25:4F:1B";
 	private static final String DEFAULT_SERIAL_PORT = "dev/rs232_dex0";
@@ -79,7 +82,8 @@ public class PrintActivity extends Activity {
 		// Set a default Printer ID
 		editPrinterID.setText(intent.getStringExtra("deviceName"));
 		DEFAULT_BT_MAC_ADDRESS=intent.getStringExtra("deviceBleutoothMacAdress");
-		base64LogoPng=intent.getStringExtra("imageb64");
+		commande= intent.getStringArrayListExtra ("cmd");
+
 		connectionTypes = (Spinner) findViewById(R.id.spinnerConnectionTypes);
 		initConnectionTypesSpinner();
 
@@ -112,6 +116,8 @@ public class PrintActivity extends Activity {
 			}
 		});
 
+
+
 	}
 
 
@@ -121,6 +127,19 @@ public class PrintActivity extends Activity {
 		getMenuInflater().inflate(R.menu.print, menu);
 		return true;
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle item selection
+		if (item.getItemId() == R.id.action_settings) {
+			finish();
+		} else {
+			return super.onOptionsItemSelected(item);
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+
 
 	private void initConnectionTypesSpinner()
 	{
@@ -389,24 +408,91 @@ public class PrintActivity extends Activity {
 						}
 					}
 				}
+					int ofset=0;
+					int widh=0;
+					int heigh=0;
 
+                if(commande!=null){
+					for (String cmd : commande) {
+						if(cmd.startsWith("write")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+							lp.write(v);
+						}
+						if(cmd.startsWith("newLine")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+							int val=Integer.parseInt(v);
+							lp.newLine(val);
 
+						}
+						if(cmd.startsWith("setBold")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+							 if(v.contains("true")){
+								 lp.setBold(true);
+							 }else{
+								 lp.setBold(false);
+							 }
+						}
+						if(cmd.startsWith("setDoubleWide")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+							if(v.contains("true")){
+								lp.setDoubleWide(true);
+							}else{
+								lp.setDoubleWide(false);
+							}
 
-				// Prints the image  graphic.
-				lp.writeGraphicBase64(base64LogoPng,
-							LinePrinter.GraphicRotationDegrees.DEGREE_0,
-							80,  // Offset in printhead dots from the left of the page
-							400, // Desired graphic width on paper in printhead dots
-							400); // Desired graphic height on paper in printhead dots
-				lp.newLine(2);
+						}
+						if(cmd.startsWith("setDoubleHigh")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+							if(v.contains("true")){
+								lp.setDoubleHigh(true);
+							}else{
+								lp.setDoubleHigh(false);
+							}
+						}
+						if(cmd.startsWith("offset")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+							ofset=Integer.parseInt(v);
 
-				lp.setBold(true);
+						}
+						if(cmd.startsWith("width")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+							widh=Integer.parseInt(v);
+
+						}
+						if(cmd.startsWith("heigh")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+							heigh=Integer.parseInt(v);
+
+						}
+						if(cmd.startsWith("image")){
+							String v=cmd.substring(cmd.indexOf(";")+1,cmd.length());
+
+							lp.writeGraphicBase64(v.toString(),
+									LinePrinter.GraphicRotationDegrees.DEGREE_0,
+									ofset,  // Offset in printhead dots from the left of the page
+									widh, // Desired graphic width on paper in printhead dots
+									heigh);
+						}
+					}
+
+				}
+				//signature
 				lp.setDoubleWide(true);
 				lp.setDoubleHigh(true);
 				lp.write("FLUTTER PR3 PLUGIN BY PHINCODE");
 				lp.setDoubleWide(false);
 				lp.setDoubleHigh(false);
 				lp.newLine(2);
+				lp.newLine(2);
+				lp.write("-------------------------------------------------------");
+
+				// Prints the image  graphic.
+				/*lp.writeGraphicBase64(base64LogoPng,
+							LinePrinter.GraphicRotationDegrees.DEGREE_0,
+							80,  // Offset in printhead dots from the left of the page
+							400, // Desired graphic width on paper in printhead dots
+							400); // Desired graphic height on paper in printhead dots
+				*/
 
 				// Set font style to Bold + Double Wide + Double High.
 				/*lp.setBold(true);
