@@ -39,8 +39,13 @@ var cmd=[
 ```
 
 ##use case
+``` Dart
   Honnywellintermecpr3 n =new Honnywellintermecpr3();
   n.printGeneral("device name", "device bleutooth mac address",cmd);
+```
+
+## ++
+for more information see example app on this repo
 
 ## ! important !
 
