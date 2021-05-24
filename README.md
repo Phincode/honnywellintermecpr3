@@ -51,8 +51,8 @@ for more information see example app on this repo
 
 Verify that you have printing service apk install on your android phone before exécute the code
 ##
-you can download it here
-
+you can download it here:
+[https://drive.google.com/file/d/1pT3PYhWltPql44V0YFpJeuZyPkY20q3Y/view?usp=sharing]
 
 
 
